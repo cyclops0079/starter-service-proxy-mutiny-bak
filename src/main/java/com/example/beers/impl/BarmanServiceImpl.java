@@ -2,9 +2,7 @@ package com.example.beers.impl;
 
 import com.example.beers.Beer;
 import com.example.beers.BarmanService;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.smallrye.mutiny.Uni;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,20 +16,20 @@ public class BarmanServiceImpl implements BarmanService {
     }
 
     @Override
-    public Future<Beer>  giveMeAStaticBeer(String customerName) {
+    public Uni<Beer> giveMeAStaticBeer(String customerName) {
         Beer beer = new Beer("Workshop River Stout", "English Stout", 5);
-        return Future.succeededFuture(beer);
+        return Uni.createFrom().item(() -> beer);
     }
 
     @Override
-    public Future<Integer> getMyBill(String customerName) {
-        return Future.succeededFuture(bills.get(customerName));
+    public Uni<Integer> getMyBill(String customerName) {
+        return Uni.createFrom().item(() -> bills.get(customerName));
     }
 
     @Override
-    public Future<Void> payMyBill(String customerName) {
+    public Uni<Void> payMyBill(String customerName) {
         bills.remove(customerName);
         System.out.println("Removed debt of " + customerName);
-        return Future.succeededFuture();
+        return Uni.createFrom().voidItem();
     }
 }
