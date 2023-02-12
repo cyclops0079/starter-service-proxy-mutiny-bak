@@ -18,19 +18,20 @@ public class BarmanServiceImpl implements BarmanService {
     }
 
     @Override
-    public void giveMeAStaticBeer(String customerName, Handler<AsyncResult<Beer>> handler) {
+    public Future<Beer>  giveMeAStaticBeer(String customerName) {
         Beer beer = new Beer("Workshop River Stout", "English Stout", 5);
-        handler.handle(Future.succeededFuture(beer));
+        return Future.succeededFuture(beer);
     }
 
     @Override
-    public void getMyBill(String customerName, Handler<AsyncResult<Integer>> handler) {
-        handler.handle(Future.succeededFuture(bills.get(customerName)));
+    public Future<Integer> getMyBill(String customerName) {
+        return Future.succeededFuture(bills.get(customerName));
     }
 
     @Override
-    public void payMyBill(String customerName) {
+    public Future<Void> payMyBill(String customerName) {
         bills.remove(customerName);
         System.out.println("Removed debt of " + customerName);
+        return Future.succeededFuture();
     }
 }
